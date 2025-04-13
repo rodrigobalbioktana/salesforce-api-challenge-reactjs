@@ -108,7 +108,6 @@ function CSVUploadHome() {
   }
 
   function displayFileInfo() : any{
-    debugger;
     return !objectData ? (<div></div>) : 
     (<div> File Uploaded: {objectData.objectApiName} </div>);
   }

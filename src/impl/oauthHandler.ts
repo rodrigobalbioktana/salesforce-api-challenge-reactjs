@@ -25,14 +25,15 @@ const getAccessToken = async (code: string): Promise<string | null> => {
   try {
     const response = await axios.post(TOKEN_URL, null, {
       params: {
-        grant_type: 'authorization_code',
-        code: code,
-        client_id: CLIENT_ID,
-        client_secret: CLIENT_SECRET,
-        redirect_uri: REDIRECT_URI,
+        grant_type: 'password',
+        client_id: '3MVG9rZjd7MXFdLhBu37ETrj31crxrFHjQ8pSUxpQKybM9JgtT954ekL0Jgze2oqMbIhM.GCX4YXN22EMMqza',
+        client_secret: '896DB73DE74D776F39EE978515017EC3AF2C3E07D2D1B607A548D0EEE00A9780',
+        username: 'rodrigo_balbi172@agentforce.com',
+        password: 'ax1204050s'
       },
       headers : {
-        access_control_allow_origin: "*"
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Access-Control-Allow-Origin': '*'
       }
     });
 
