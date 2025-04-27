@@ -1,46 +1,23 @@
-# Getting Started with Create React App
+# Super Object Manager APP
+## 🔍 Pre-requisite
+#### 1. 🔗 Create a Salesforce Connected App
+Refer to this link https://help.salesforce.com/s/articleView?id=xcloud.connected_app_create.htm&type=5 to set up a connect app.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+🚨 Important!: the redirect url for the connected app must be http://localhost:5000/oauth/callback and the OAUTH2.0 must be enabled.
+#### 2. 🛠 Set Credentials to the `.env` File
+Before running the servers, the `.env` file must be filled with the Client Id, Client Secret (from the connected app) and Login Url of the org.
 
-## Available Scripts
+Refer to this link on how to retrieve client secret and client id from the connect app 
+#### 3. 🦾 Install the necessary modules
+Run the command `npm i` on the root folder of the project to install all the necessary dependencies 
 
-In the project directory, you can run:
 
-### `npm start`
+## 🏃 Run the App
+#### 1. 🛣 Run the server
+To run the app, in a terminal that is located in the root path of the project, run the command `npm run salesforce`. 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+#### 2. ✍️ Link To Authenticate
+Open a new browser window, and go to the http://localhost:5000/oauth/auth . This will authenticate against the org.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+#### 3. 📱 Use the App
+After being authenticated, click on the button "Go to App", you will be redirected to the Super Object Manager App, where you can create and add new custom objects and fields.
