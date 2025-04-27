@@ -19,7 +19,7 @@ const CLIENT_SECRET : String | any  = process.env.REACT_APP_SF_CONSUMER_SECRET;
 const SANDBOX_URL : String  = 'https://test.salesforce.com';
 const PRODUCTION_URL : String  = 'https://login.salesforce.com';
 const OAUTH_LOGIN_ENDPOINT : String  = '/services/oauth2/authorize?client_id={1}&redirect_uri={2}&response_type=code';
-const LOCALHOST_URL : String | any = "http://localhost:3000/callback";
+const LOCALHOST_URL : String | any = "http://localhost:3000/";
 
 const TABLE_HEADERS : string [] = [
     FIELD_API_NAME_HEADER,

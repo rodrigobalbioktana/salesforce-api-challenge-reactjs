@@ -13,7 +13,9 @@ import TableRow from '@mui/material/TableRow';
 import { useState } from 'react';
 import { TABLE_HEADERS } from '../utils/constants';
 import { createNewObjectWithFields, removeHeadersFromFile } from '../utils/utils';
-import { CSVObjectWrapper } from "../wrappers/csvObjectWrapper";
+import { ToastContainer, toast, Bounce } from 'react-toastify';
+import { createNewObject } from "../impl/objectCreationHandler";
+import { createCustomFields } from "../impl/customFieldCreationHandler";
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -30,10 +32,12 @@ const VisuallyHiddenInput = styled('input')({
 function CSVUploadHome() {
     const [file, setFile] = useState();
     const [csvOutput, setCsvOutput] = useState();
-    let objectData : CSVObjectWrapper;
+    let objectData : any;
     //let tableData : any = [];
     const [tableData, setTableData] : any = useState();
     const [fileName, setFileName] = useState();
+    const [objectInfo, setObjectInfo] : any = useState();
+    const [showCreateFields, setShowCreateFields] : any = useState();
 
   const fileReader = new FileReader();
   
@@ -41,6 +45,7 @@ function CSVUploadHome() {
     const headerlessData : String [] = removeHeadersFromFile(fileData);
     objectData = createNewObjectWithFields(fileName, headerlessData);
     setTableData(objectData.objectFields);
+    setObjectInfo(objectData);
   }
 
   const handleOnChange = (e : any) => {
@@ -108,13 +113,67 @@ function CSVUploadHome() {
   }
 
   function displayFileInfo() : any{
-    return !objectData ? (<div></div>) : 
-    (<div> File Uploaded: {objectData.objectApiName} </div>);
+    return !objectInfo ? (<div></div>) : 
+    (<div> File Uploaded: {objectInfo.objectApiName} </div>);
+  }
+
+  async function createFields(event: any){
+    const response : any = await createCustomFields(objectInfo);
+    console.log("RESPONSE", response);
+  }
+
+  async function createObject(event : any) {
+    const response : any = await createNewObject(objectInfo);
+    if(response.data.errors.length == 0){
+      toast.success('Success! Object Created', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce,
+      });
+      setShowCreateFields(true);
+    } else {
+      const errorMessage = response.data.errors[0].message;
+      toast.error('Error while creating new object!. ' + errorMessage, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        transition: Bounce
+      });
+      if(response.data.errors[0].statusCode.includes("DUPLICATE")){
+        setShowCreateFields(true);
+      } else {
+        setShowCreateFields(false);
+      }
+    }
   }
 
 
   return (
     <div className='csvUploadHome'>
+        <ToastContainer 
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick={false}
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+          transition={Bounce}
+        />
         <h1>Salesforce Super Object Manager</h1>
         <div>
             <Button
@@ -139,6 +198,16 @@ function CSVUploadHome() {
             </Button>
         </div>
         {buildTable()}
+        <Button variant="outlined" onClick={(e : any) => {
+            createObject(e);
+        }}>
+            Create Object
+        </Button>
+        <Button variant="outlined" onClick={(e : any) => {
+            createFields(e);
+        }}>
+            Create Fields
+        </Button>
     </div>
   );
 }

@@ -6,6 +6,7 @@ import { CLIENT_KEY, CLIENT_SECRET as C_SECRET, LOCALHOST_URL } from "../utils/c
 // }
 
 import axios from 'axios';
+import {useEffect} from 'react';
 
 // Salesforce OAuth 2.0 Credentials
 const CLIENT_ID = CLIENT_KEY; // From Salesforce connected app
@@ -20,30 +21,34 @@ const generateAuthUrl = (): string => {
   return authUrl;
 };
 
-// Function to exchange authorization code for access token
-const getAccessToken = async (code: string): Promise<string | null> => {
-  try {
-    const response = await axios.post(TOKEN_URL, null, {
-      params: {
-        grant_type: 'password',
-        client_id: '3MVG9rZjd7MXFdLhBu37ETrj31crxrFHjQ8pSUxpQKybM9JgtT954ekL0Jgze2oqMbIhM.GCX4YXN22EMMqza',
-        client_secret: '896DB73DE74D776F39EE978515017EC3AF2C3E07D2D1B607A548D0EEE00A9780',
-        username: 'rodrigo_balbi172@agentforce.com',
-        password: 'ax1204050s'
-      },
-      headers : {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Access-Control-Allow-Origin': '*'
-      }
-    });
 
-    // Retrieve the access token from the response
-    const { access_token } = response.data;
-    return access_token;
-  } catch (error) {
-    console.error('Error during OAuth token exchange', error);
-    return null;
-  }
+// Function to exchange authorization code for access token
+const getAccessToken = async (code: string) => {
+  // useEffect(() => {
+  //   fetch('/login')
+  //     .then(res => res.json())
+  //     .then(data => console.log(data))
+  //     .catch(err => console.error(err));
+  // }, []);
+  // try {
+  //   const response = await axios.post('https://orgfarm-343e380a70-dev-ed.develop.my.salesforce.com/services/oauth2/authorize', null, {
+  //     params: {
+  //       response_type: 'code',
+  //       client_id: '3MVG9rZjd7MXFdLhBu37ETrj31crxrFHjQ8pSUxpQKybM9JgtT954ekL0Jgze2oqMbIhM.GCX4YXN22EMMqza',
+  //       client_secret: '896DB73DE74D776F39EE978515017EC3AF2C3E07D2D1B607A548D0EEE00A9780',
+  //       redirect_uri: 'http://localhost:5000'
+  //     },
+  //   });
+
+  //   console.log('response', response);
+
+  //   // Retrieve the access token from the response
+  //   const { access_token } = response.data;
+  //   return access_token;
+  // } catch (error) {
+  //   console.error('Error during OAuth token exchange', error);
+  //   return null;
+  // }
 };
 
 // Function to make a request to Salesforce using the access token
@@ -67,12 +72,13 @@ const startOAuthFlow = async () => {
   // After the user authenticates and gets redirected to your `redirectUri`,
   // they will pass an authorization code to your redirect URI.
   // For example, you can extract the authorization code like this:
-  const code = 'AUTHORIZATION_CODE_FROM_REDIRECT'; // You need to retrieve this from the query parameters
+  const code = 'AUTHORIZATION_CODE_FROM_REDIRECT'; 
+  getAccessToken(code);// You need to retrieve this from the query parameters
   
-  const accessToken = await getAccessToken(code);
-  if (accessToken) {
-    await makeSalesforceRequest(accessToken);
-  }
+  // const accessToken = await getAccessToken(code);
+  // if (accessToken) {
+  //   await makeSalesforceRequest(accessToken);
+  // }
 };
 
 // Start the OAuth process (You can call this function after getting the code from the redirect URL)
