@@ -1,3 +1,11 @@
+body{
+  background-image: url('../img/backgroundImg.jpg');
+  background-position: center;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
 .App {
   text-align: center;
 }

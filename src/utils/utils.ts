@@ -16,10 +16,16 @@ function processPicklistOptions(picklistOptions : String) : String[] {
 }
 
 function parseBoolean(toParse : String) : Boolean {
-    if(toParse == null || toParse == '' || BOOLEAN_STRING_OPTIONS.includes(toParse.toLowerCase())){
-        return false;
-    }
-    return BOOLEAN_STRING_TRUE_OPTIONS.includes(toParse.toLowerCase());
+    return toParse != null && 
+           toParse != '' && 
+           (
+            toParse == 'Yes' || 
+            toParse == 'yes' || 
+            toParse == 'YES' ||
+            toParse == 'true' ||
+            toParse == 'True' ||
+            toParse == 'TRUE'
+        );
 }
 
 function fileHasHeaders(fileContent : String) : Boolean {
@@ -71,9 +77,9 @@ function createNewField(fieldContent : String) : CSVFieldWrapper | null{
     fieldToInsert.dataType = fieldProps[2];
     fieldToInsert.helpText = fieldProps[3];
     fieldToInsert.required = parseBoolean(fieldProps[4]);
-    fieldToInsert.unique = parseBoolean(fieldProps[4]);
-    fieldToInsert.caseSensitive = parseBoolean(fieldProps[4]);
-    fieldToInsert.externalId = parseBoolean(fieldProps[4]);
+    fieldToInsert.unique = parseBoolean(fieldProps[5]);
+    fieldToInsert.caseSensitive = parseBoolean(fieldProps[6]);
+    fieldToInsert.externalId = parseBoolean(fieldProps[7]);
     fieldToInsert.requiredLabel = booleanValueLabel(fieldToInsert.required);
     fieldToInsert.uniqueLabel = booleanValueLabel(fieldToInsert.unique);
     fieldToInsert.caseSensitiveLabel = booleanValueLabel(fieldToInsert.caseSensitive);
@@ -95,13 +101,4 @@ export { createNewObjectWithFields, fileHasHeaders, parseBoolean, processPicklis
 
 export class Utils {
 
-
-    // public static List<String> getExistingObjectsAPINames(){
-    //     List<String> apiObjectNames = new List<String>();
-    //     for (Schema.SObjectType sobjectType : Schema.getGlobalDescribe().values()){
-    //         Schema.DescribeSObjectResult objResult = sobjectType.getDescribe();
-    //         apiObjectNames.add(objResult.getName());
-    //     }
-    //     return apiObjectNames;
-    // }
 }

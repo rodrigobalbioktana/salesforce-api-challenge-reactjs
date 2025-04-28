@@ -47,12 +47,12 @@ app.get("/oauth/callback", async (req, res) => {
 
         connections[userInfo.id] = conn;
 
-        res.send(`
-            <h1> Auth Success </h1>
+        res.send(`<html><head></head><body style="margin-top: 8rem; display: flex; flex-direction: column; justify-content: center; align-items: center; font-family: sans-serif; background-color: #000000e8; color: white;">
+            <h1 style="margin-bottom: 70px;"> Auth Success </h1>
             <p> User Id: ${userInfo.id} </p>
             <p> Access token ${conn.accessToken.substring(0, 20)} </p>
-            <p> You can now make API request using the /api endpoint <p>
-            <a href="http://localhost:3000?userId=${userInfo.id}&authToken=${conn.accessToken}&instanceUrl=${userInfo.url}">Go To App</a>
+            <a style="margin-top: 8rem; color: white; text-decoration: none; border: 1px solid white; padding: 1rem 2rem; border-radius: 10px;"href="http://localhost:3000?userId=${userInfo.id}&authToken=${conn.accessToken}&instanceUrl=${userInfo.url}">Go To App</a>
+            </body></html>
         `);
     } catch (err){
         console.error(err);
@@ -62,7 +62,6 @@ app.get("/oauth/callback", async (req, res) => {
 
 app.post("/salesforce/createObject", async (req, res) => {
     try{
-        console.log(req);
         const newObject = req.body;
         const result = await conn.metadata.create('CustomObject', req.body.objectDefinition);
         res.send(result);
@@ -74,18 +73,17 @@ app.post("/salesforce/createObject", async (req, res) => {
 
 app.post("/salesforce/createFields", async (req, res) => {
     try{
-        console.log(req);
         const newObject = req.body;
         const results = [];
         newObject.fieldsData.fields.forEach(
             async (newField) => {
                 const newFieldData = {
-                    fullName: `${newObject.fieldsData.objectApiName}.${newField.fieldApiName}__c`,
+                    fullName: `${newObject.fieldsData.objectApiName}.${newField.fieldApiName}${newField.fieldApiName.includes('__c') ? '' : '__c'}`,
                     label: newField.fieldLabel,
                     type: newField.dataType,
-                    required: newField.require || false,
+                    required: newField.required || false,
                     inlineHelpText: newField.helpText,
-                    caseSensitive: newField.caseSensitive || false,
+                    caseSensitive: (newField.unique && newField.caseSensitive) || false,
                     unique: newField.unique || false,
                     externalId: newField.externalId || false
                 };
@@ -100,21 +98,32 @@ app.post("/salesforce/createFields", async (req, res) => {
                         break;
                     case "Number":
                         newFieldData.scale = 3;
-                        newFieldData.precision = 3;
+                        newFieldData.precision = 18;
                         break;
                     case "Currency":
                         newFieldData.scale = 3;
-                        newFieldData.precision = 3;
+                        newFieldData.precision = 18;
                         break;
-                    case "Picklist": newFieldData.valueSet = newField.picklistOptions;
+                    case "Picklist": 
+                        newFieldData.valueSet = createValueSet(newField.picklistOptions);
+                        newFieldData.caseSensitive = false;
                         break;
                     case "Lookup":
+                        newFieldData.referenceTo = newField.fieldLabel;
+                        newFieldData.relationshipName = newField.fieldLabel;
+                        break;
+                    case "MasterDetail":
                         newFieldData.referenceTo = newField.fieldLabel;
                         newFieldData.relationshipName = newField.fieldLabel;
                         break;
                     case "URL":
                         newFieldData.type = "Text";
                         newFieldData.length = 255;
+                        break;
+                    case "Boolean":
+                        newFieldData.type = "Checkbox";
+                        newFieldData.defaultValue = false;
+                        newFieldData.required = false;
                         break;
                     case "Long Text":
                         newFieldData.type = "LongTextArea";
@@ -126,9 +135,9 @@ app.post("/salesforce/createFields", async (req, res) => {
                 }
                 const result = await conn.metadata.create('CustomField', newFieldData);
                 results.push(result);
+                console.log('RESULTS -> ', result);
             }
         );
-        
         res.send(results);
     } catch(err){
         console.error(err);
@@ -136,7 +145,23 @@ app.post("/salesforce/createFields", async (req, res) => {
     }
 });
 
+function createValueSet(picklistOpts){
+    return {
+        valueSetDefinition: {
+            value: picklistOpts.map(
+                item => ({
+                    fullName: item.trim(),
+                    default: false,
+                    label: item,
+                    isActive: true
+                })
+            )
+        }
+    };
+}
+
 const PORT = 5000;
 app.listen(PORT, () => {
     console.log('Server running on PORT: '+PORT);
 });
+

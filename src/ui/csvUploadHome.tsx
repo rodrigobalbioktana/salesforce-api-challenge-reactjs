@@ -16,6 +16,7 @@ import { createNewObjectWithFields, removeHeadersFromFile } from '../utils/utils
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import { createNewObject } from "../impl/objectCreationHandler";
 import { createCustomFields } from "../impl/customFieldCreationHandler";
+import '../css/csvUploadHome.scss';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -114,7 +115,11 @@ function CSVUploadHome() {
 
   function displayFileInfo() : any{
     return !objectInfo ? (<div></div>) : 
-    (<div> File Uploaded: {objectInfo.objectApiName} </div>);
+    (<div className="displayFileInfo"> 
+      <div className="fileName">File Uploaded: {objectInfo.objectApiName}.csv</div>
+      <div className="objectName">Object Label: {objectInfo.objectLabel}</div>
+      <div className="objectApiName">Object API Name: {objectInfo.objectApiName}</div>
+    </div>);
   }
 
   async function createFields(event: any){
@@ -174,39 +179,39 @@ function CSVUploadHome() {
           theme="dark"
           transition={Bounce}
         />
-        <h1>Salesforce Super Object Manager</h1>
-        <div>
+        <div className="imgTitle"></div>
+        <div className="buttonBar">
             <Button
                 component="label"
                 role={undefined}
-                variant="contained"
+                variant="text"
                 tabIndex={-1}
-                startIcon={<CloudUploadIcon />}
+                startIcon=""
             >
-                Upload File
+                <div className="imgUploadCSV"></div>
                 <VisuallyHiddenInput
                     type="file"
                     onChange={handleOnChange}
                     multiple
                 />
             </Button>
-            {displayFileInfo()}
-            <Button variant="outlined" onClick={(e : any) => {
+            <Button variant="text" onClick={(e : any) => {
                 handleOnSubmit(e);
             }}>
-                Process CSV File
+                <div className="imgProcessCSV"></div>
             </Button>
         </div>
+        {displayFileInfo()}
         {buildTable()}
-        <Button variant="outlined" onClick={(e : any) => {
+        <Button variant="text" onClick={(e : any) => {
             createObject(e);
         }}>
-            Create Object
+            <div className="imgCreateObject"></div>
         </Button>
-        <Button variant="outlined" onClick={(e : any) => {
+        <Button variant="text" onClick={(e : any) => {
             createFields(e);
         }}>
-            Create Fields
+            <div className="imgCreateFields"></div>
         </Button>
     </div>
   );
