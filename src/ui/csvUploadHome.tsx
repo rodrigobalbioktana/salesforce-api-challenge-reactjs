@@ -17,6 +17,7 @@ import { ToastContainer, toast, Bounce } from 'react-toastify';
 import { createNewObject } from "../impl/objectCreationHandler";
 import { createCustomFields } from "../impl/customFieldCreationHandler";
 import '../css/csvUploadHome.scss';
+import FLSManager from './flsManager';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -39,6 +40,8 @@ function CSVUploadHome() {
     const [fileName, setFileName] = useState();
     const [objectInfo, setObjectInfo] : any = useState();
     const [showCreateFields, setShowCreateFields] : any = useState();
+    const [showFLS, setShowFLS] : any = useState();
+    let flsInfo : any;
 
   const fileReader = new FileReader();
   
@@ -124,7 +127,6 @@ function CSVUploadHome() {
 
   async function createFields(event: any){
     const response : any = await createCustomFields(objectInfo);
-    console.log("RESPONSE", response);
   }
 
   async function createObject(event : any) {
@@ -161,6 +163,12 @@ function CSVUploadHome() {
         setShowCreateFields(false);
       }
     }
+  }
+
+  function displayFLSModal(){
+    return(
+      objectInfo ? <FLSManager objectInfo={objectInfo}/> : <div></div>
+    );
   }
 
 
@@ -213,6 +221,7 @@ function CSVUploadHome() {
         }}>
             <div className="imgCreateFields"></div>
         </Button>
+        {displayFLSModal()}
     </div>
   );
 }

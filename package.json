@@ -24,6 +24,7 @@
     "jsforce": "^3.8.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-modal": "^3.16.3",
     "react-scripts": "5.0.1",
     "react-toastify": "^11.0.5",
     "sass": "^1.87.0",
@@ -36,7 +37,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "salesforce": "concurrently \"npm start\" \"node server.js\""
+    "superobjectmanager": "concurrently \"npm start\" \"node server.js\""
   },
   "eslintConfig": {
     "extends": [
@@ -58,6 +59,7 @@
   },
   "proxy": "http://localhost:5000",
   "devDependencies": {
+    "@types/react-modal": "^3.16.3",
     "concurrently": "^9.1.2"
   }
 }

@@ -160,6 +160,36 @@ function createValueSet(picklistOpts){
     };
 }
 
+app.get('/salesforce/fls/get', async (req, res) => {
+    const permSetsAndProfiles = {};
+    const permSets = await conn.metadata.list([{type: 'PermissionSet'}]);
+    permSetsAndProfiles.permissionSets = permSets;
+    const profiles = await conn.metadata.list([{type: 'Profile'}]);
+    permSetsAndProfiles.profiles = profiles;
+    res.send(permSetsAndProfiles);
+});
+
+app.post('/salesforce/fls/set', (req, res) => {
+    console.log("REQU", req);
+    Array.from(req.body).forEach(
+        async (mapEntry) => {
+            const result = await conn.metadata.update('CustomField', mapEntry.value);
+            console.log('FLS RESULT -> ', mapEntry.key, result);
+        }
+    );
+    // const fieldMetadata = {
+    //     fullName: '<objectApiName>.<fieldApiName>',
+    //     fieldPermissions: [
+    //         {
+    //             editable: false,
+    //             readable: false,
+    //             name: 'PermSet or Profile Name'
+    //         }
+    //     ]
+    // }
+    // const result = await conn.metadata.update('CustomField', fieldMetadata);
+});
+
 const PORT = 5000;
 app.listen(PORT, () => {
     console.log('Server running on PORT: '+PORT);

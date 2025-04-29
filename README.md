@@ -14,7 +14,7 @@ Run the command `npm i` on the root folder of the project to install all the nec
 
 ## 🏃 Run the App
 #### 1. 🛣 Run the server
-To run the app, in a terminal that is located in the root path of the project, run the command `npm run salesforce`. 
+To run the app, in a terminal that is located in the root path of the project, run the command `npm run superobjectmanager`. 
 
 #### 2. ✍️ Link To Authenticate
 Open a new browser window, and go to the http://localhost:5000/oauth/auth . This will authenticate against the org.
