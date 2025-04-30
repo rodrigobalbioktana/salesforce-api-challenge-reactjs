@@ -169,25 +169,27 @@ app.get('/salesforce/fls/get', async (req, res) => {
     res.send(permSetsAndProfiles);
 });
 
-app.post('/salesforce/fls/set', (req, res) => {
-    console.log("REQU", req);
-    Array.from(req.body).forEach(
+app.post('/salesforce/fls/set', async (req, res) => {
+    let apiResult;
+    Array.from(req.body.data.fls).forEach(
         async (mapEntry) => {
-            const result = await conn.metadata.update('CustomField', mapEntry.value);
-            console.log('FLS RESULT -> ', mapEntry.key, result);
+            mapEntry.fieldPermissions.forEach(
+                async (flsPerm) => {
+                    const metadataInfo = await conn.metadata.read(flsPerm.metadataType, flsPerm.name);
+                    metadataInfo.fieldPermissions.push({
+                        field: mapEntry.fullName,
+                        editable: flsPerm.editable,
+                        readable: flsPerm.readable
+                    });
+                    const result = await conn.metadata.update(flsPerm.metadataType, metadataInfo);
+                    console.log('FLS RESULT -> ', mapEntry.fullName, result);
+                    apiResult = result;
+                    return apiResult;
+                }
+            );
+            return apiResult;
         }
     );
-    // const fieldMetadata = {
-    //     fullName: '<objectApiName>.<fieldApiName>',
-    //     fieldPermissions: [
-    //         {
-    //             editable: false,
-    //             readable: false,
-    //             name: 'PermSet or Profile Name'
-    //         }
-    //     ]
-    // }
-    // const result = await conn.metadata.update('CustomField', fieldMetadata);
 });
 
 const PORT = 5000;

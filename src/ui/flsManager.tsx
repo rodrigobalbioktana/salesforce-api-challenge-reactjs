@@ -78,6 +78,7 @@ function FLSManager(props : any) {
     function handleInputChange(e : any){
         const fieldInfo = e.target.id.split('%');
         const fullName = `${props.objectInfo.objectApiName}.${fieldInfo[0]}`;
+        const metadataType = fieldInfo[3];
 
         if(!permissions.has(fullName)){
             permissions.set(
@@ -88,7 +89,8 @@ function FLSManager(props : any) {
                         {
                             editable: fieldInfo[2] == 'editable' && e.target.checked,
                             readable: fieldInfo[2] == 'readable' && e.target.checked,
-                            name: fieldInfo[1]
+                            name: fieldInfo[1],
+                            metadataType
                         }
                     ]
                 }
@@ -110,7 +112,8 @@ function FLSManager(props : any) {
                     {
                         editable: fieldInfo[2] == 'editable' && e.target.checked,
                         readable: fieldInfo[2] == 'readable' && e.target.checked,
-                        name: fieldInfo[1]
+                        name: fieldInfo[1],
+                        metadataType
                     }
                 );
             }
@@ -129,13 +132,13 @@ function FLSManager(props : any) {
         );
     }
 
-    function buildTableContent(profileOrPermsSetName : string){
+    function buildTableContent(profileOrPermsSetName : string, permSetOrProfile : string){
         return(
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     {buildTableHeader()}
                     <TableBody>
-                        {props.objectInfo.objectFields.map((row : any) => (
+                        {props.objectInfo.objectFields.filter((r : any) => !r.required).map((row : any) => (
                             <TableRow
                                 key={row.fieldApiName}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -145,12 +148,12 @@ function FLSManager(props : any) {
                                 </TableCell>
                                 <TableCell align="left">
                                     <input type='checkbox' 
-                                           id={`${row.fieldApiName}%${profileOrPermsSetName}%readable`} 
+                                           id={`${row.fieldApiName}%${profileOrPermsSetName}%readable%${permSetOrProfile}`} 
                                            onChange={(e : any) => {handleInputChange(e);}}/>
                                 </TableCell>
                                 <TableCell align="left">
                                     <input type='checkbox' 
-                                            id={`${row.fieldApiName}%${profileOrPermsSetName}%editable`}
+                                            id={`${row.fieldApiName}%${profileOrPermsSetName}%editable%${permSetOrProfile}`}
                                             onChange={(e : any) => {handleInputChange(e);}}/>
                                 </TableCell>
                             </TableRow>
@@ -170,7 +173,7 @@ function FLSManager(props : any) {
                             <div className="flsName">
                                 {permSet.fullName}
                             </div>
-                            {buildTableContent(permSet.fullName)}
+                            {buildTableContent(permSet.fullName, 'PermissionSet')}
                         </div>);
                     }
                 )}
@@ -187,7 +190,7 @@ function FLSManager(props : any) {
                             <div className="flsName">
                                 {profile.fullName}
                             </div>
-                            {buildTableContent(profile.fullName)}
+                            {buildTableContent(profile.fullName, 'Profile')}
                         </div>);
                     }
                 )}
