@@ -1,0 +1,82 @@
+.manageFLSModal{
+    width: 90%;
+    height: 90%;
+
+    .modalBody{
+        .modalbdy{
+            .modalTitle{
+                background-image: url('../../img/flsTitle.png');
+                background-size: contain;
+                width: 7rem;
+                height: 7rem;
+                background-repeat: no-repeat;
+                padding: 0px;
+            }
+            .modalContent{
+
+            }
+            .updateFLS{
+                background-image: url('../../img/update.png');
+                background-size: contain;
+                width: 7rem;
+                height: 7rem;
+                background-repeat: no-repeat;
+                padding: 0px;
+            }
+        }
+    }
+
+    .manageFLSBTN{
+        background-image: url('../../img/manageFls.png');
+        background-size: contain;
+        width: 7rem;
+        height: 7rem;
+        background-repeat: no-repeat;
+        padding: 0px;
+    }
+
+    .modalTitle{
+        background-image: url('../../img/flsTitle.png');
+        background-size: contain;
+        width: 7rem;
+        height: 7rem;
+        background-repeat: no-repeat;
+        padding: 0px;
+    }
+}
+
+.flsTitle{
+    font-size: 30px;
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    font-weight: 600;
+    width: 100%;
+    margin-left: 10px;
+}
+
+.flsName{
+    margin-bottom: 10px;
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+.headerTopic{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.collapseBtn{
+    margin-bottom: 20px;
+}
+
+.buttonBar{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-top: 15px;
+}
