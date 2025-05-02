@@ -4,5 +4,8 @@ module.exports = {
   coveragePathIgnorePatterns: [
     '/node_modules/'
   ],
-  testTimeout: 10000
+  testTimeout: 10000,
+  "transform": {
+    "^.+\\.(ts|tsx|js|jsx)$": "ts-jest"
+  }
 };
