@@ -21,3 +21,10 @@ Open a new browser window, and go to the http://localhost:5000/oauth/auth . This
 
 #### 3. 📱 Use the App
 After being authenticated, click on the button "Go to App", you will be redirected to the Super Object Manager App, where you can create and add new custom objects and fields.
+
+## 🧪 Run the Jest Tests
+#### 1. ⚙️ Install npm dependencies
+Run the command `npm i` in the root folder of the project to  install all the necessary dependencies
+
+#### 2. 🔬 Run the Jest Tests
+To run the Jest tests, run the command `npm test` or `npm test:watch`
