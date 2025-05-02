@@ -1,6 +1,6 @@
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { retrieveProfilesAndPermSets } from "./your-module-path";
+import { retrieveProfilesAndPermSets } from "../src/impl/flsRetriever.ts";
 
 describe("retrieveProfilesAndPermSets", () => {
   let mockAxios: MockAdapter;

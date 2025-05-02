@@ -1,6 +1,6 @@
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { createCustomFields } from "./your-module-path";
+import { createCustomFields } from "../src/impl/customFieldCreationHandler.ts";
 
 describe("createCustomFields", () => {
   let mockAxios: MockAdapter;

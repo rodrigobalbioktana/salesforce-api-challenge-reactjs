@@ -38,10 +38,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest",
     "eject": "react-scripts eject",
-    "test" : "jest",
-    "test:watch" : "jest --watch",
+    "test:watch": "jest --watch",
     "superobjectmanager": "concurrently \"npm start\" \"node server.js\""
   },
   "eslintConfig": {
@@ -64,7 +63,10 @@
   },
   "proxy": "http://localhost:5000",
   "devDependencies": {
+    "@babel/preset-typescript": "^7.27.1",
+    "@jest/globals": "^29.7.0",
     "@types/react-modal": "^3.16.3",
-    "concurrently": "^9.1.2"
+    "concurrently": "^9.1.2",
+    "ts-jest": "^29.3.2"
   }
 }

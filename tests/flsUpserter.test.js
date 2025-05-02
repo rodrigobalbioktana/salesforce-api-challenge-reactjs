@@ -1,6 +1,6 @@
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
-import { upsertFls } from "./your-module-path";
+import { upsertFls } from "../src/impl/flsUpserter.ts";
 
 describe("upsertFls", () => {
   let mockAxios: MockAdapter;
